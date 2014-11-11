@@ -1,0 +1,22 @@
+(ns hoplon.dimple.chart)
+
+(def chart-types
+  {:line js/dimple.plot.line
+   :area js/dimple.plot.area
+   :bubble js/dimple.plot.bubble
+   :bar js/dimple.plot.bar})
+
+(defelem chart [{:keys [id width height category-axis measure-axis legend data chart-type]
+                 :or {id (str (gensym)) width 800 height 600 chart-type :line legend [200 10 380 20 "right"]}} _]
+  (with-let [container (div :id id)]
+    (with-init!
+      (let [Chart (.-chart js/dimple)
+            svg (.newSvg js/dimple (str "#" id) width height)
+            data-js (clj->js data)
+            chart (Chart. svg data-js)]
+        (.addCategoryAxis chart "x" category-axis)
+        (.addMeasureAxis chart "y" measure-axis)
+        (.addSeries chart "Series" (chart-types chart-type))
+        (let [[x y w h align] legend]
+          (.addLegend chart x y w h align))
+        (.draw chart)))))
