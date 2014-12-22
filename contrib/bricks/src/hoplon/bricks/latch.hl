@@ -1,0 +1,17 @@
+(ns hoplon.bricks.latch
+  (:require-macros
+   [tailrecursion.javelin :refer [defc defc= cell=]])
+  (:require
+   [tailrecursion.javelin :refer [cell]]))
+
+(defn latch
+  "Returns a cell with formula (f x) which updates only when (f x) is truthy"
+  ([c f callback]
+   (let [l (cell nil)]
+     (add-watch c :latch (fn [k r o n] (when-let [v (f n)]
+                                         (reset! l v)
+                                         (callback v))))
+     l))
+  ([c f]
+   (latch c f (constantly nil))))
+

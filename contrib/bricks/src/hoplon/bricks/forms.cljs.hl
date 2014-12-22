@@ -1,0 +1,13 @@
+(ns hoplon.bricks.forms)
+
+(defelem login-form [{:keys [login-fn] :as attr} kids]
+  (form :on-submit #(login-fn (val-id "inputUsername") (val-id "inputPassword"))
+        (div :class "form-group"
+             (label :for "inputUsername" "Username")
+             (input :type "text" :class "form-control" :id "inputUsername" :placeholder "Username"))
+        (div :class "form-group"
+             (label :for "inputPassword" "Password")
+             (input :type "password" :class "form-control" :id "inputPassword" :placeholder "Password"))
+        (button :type "submit" :class "btn btn-primary" "Login")))
+
+

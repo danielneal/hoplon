@@ -1,0 +1,6 @@
+(ns hoplon.bricks.banners)
+
+(defelem loading-banner [{:keys [error loading]} kids]
+  (div
+   (div :class "alert alert-danger" :role "alert" :fade-toggle error (text "~(:message error)"))
+   (div :class "alert alert-warning" :role "alert" :fade-toggle (cell= (and (seq loading) (not error))) "Loading")))

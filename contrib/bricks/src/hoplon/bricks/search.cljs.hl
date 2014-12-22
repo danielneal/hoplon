@@ -1,0 +1,58 @@
+(ns hoplon.bricks.search)
+
+(defn contains [s subs]
+  (> (.indexOf s subs) -1))
+
+;; -----------------
+;; Selectize redefinition
+;; -----------------
+
+(defn- wrap-render [selectize-attrs]
+  (update-in
+   selectize-attrs
+   [:render]
+   (fn [render]
+     (reduce-kv (fn [m k f] (assoc m k (comp #(.-innerHTML (div %)) f js->clj))) {} render))))
+
+(defelem selectize
+  [{:keys [cell id class render find-by-id] :as attrs} options]
+  (with-let [s (select :id id :class (str "selectized " class) options)]
+    (let [new-attrs (wrap-render (merge attrs (if cell {:onChange #(reset! cell %)})))]
+      (with-init!
+        (let [selectize (.selectize (js/jQuery s) (clj->js new-attrs))
+              $s (aget s "selectize")
+              cl (aget $s "clear")
+              $w (aget (aget $s "$wrapper") 0)]
+          ($w :click #(.call cl $s))
+          (cell=
+           (let [item (when find-by-id (find-by-id cell))]
+             (cond (and cell item)
+                   (do
+                     (.addOption $s (clj->js item))
+                     (.setValue $s cell))
+
+                   (nil? cell)
+                   (.setValue $s (clj->js nil))))))))))
+
+;; ---------------------
+;; Project Picker
+;; ---------------------
+
+(defn load-projects [projects query callback]
+  (let [filtered (take 10 (filter #(contains (% :combined) query) @projects))]
+    (callback (clj->js filtered))))
+
+(defelem project-picker [{:keys [selected-project projects]} kids]
+  (selectize
+   :cell selected-project
+   :class "projects"
+   :valueField "projectid"
+   :labelField "projectreference"
+   :searchField "combined"
+   :create false
+   :maxOptions 10
+   :find-by-id (cell= (fn [id] (first (filter #(= (% :projectid) id) projects))))
+   :render {:option #(let [{:strs [projectreference projectid sitename]} %]
+                       (div (p :class "reference" projectreference)
+                            (p :class "client" sitename)))}
+   :load (partial load-projects projects)))

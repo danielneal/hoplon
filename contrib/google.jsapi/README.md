@@ -8,6 +8,31 @@ A [Hoplon][hoplon] wrapper for the [Google JSAPI][3].
 
 ## Usage
 
+At the moment this is just a quick and dirty dimple integration.
+Dimple has loads and loads of capabilities
+
+## Data
+
+Provide data to dimple as a vector of maps, like this:
+
+    (def data [{"Item" "Chair" "Weight" 5   "Height" 100}
+               {"Item" "Desk"  "Weight" 100 "Height" 100}
+               {"Item" "Lamp"  "Weight" 20  "Height" 20}])
+
+## Simple bar chart example
+
+    (def sentence "The quick brown fox jumped over the lazy dog. The lazy dog was annoyed by this but didn't do anything because he was lazy.
+                   In effect, the quick brown fox had got away with his reckless jumping once again.")
+
+    (def letter-frequencies
+      (for [[char f] (frequencies sentence)]
+        {"Letter" (str char) "Frequency" f}))
+
+    (html
+      (head)
+        (body
+          (chart :id "some-chart" :data letter-frequencies :measure-axis "Frequency" :category-axis "Letter" :chart-type :bar :width 1200 :height 600)))
+
 
 ## License
 
