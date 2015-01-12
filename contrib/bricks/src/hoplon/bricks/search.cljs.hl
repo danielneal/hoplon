@@ -1,7 +1,8 @@
 (ns hoplon.bricks.search)
 
 (defn contains [s subs]
-  (> (.indexOf s subs) -1))
+  (when (and s subs)
+    (> (.indexOf s subs) -1)))
 
 ;; -----------------
 ;; Selectize redefinition
@@ -39,7 +40,7 @@
 ;; ---------------------
 
 (defn load-projects [projects query callback]
-  (let [filtered (take 10 (filter #(contains (% :combined) query) @projects))]
+  (let [filtered (take 10 (filter #(contains (get % :combined) query) @projects))]
     (callback (clj->js filtered))))
 
 (defelem project-picker [{:keys [selected-project projects]} kids]
@@ -51,7 +52,7 @@
    :searchField "combined"
    :create false
    :maxOptions 10
-   :find-by-id (cell= (fn [id] (first (filter #(= (% :projectid) id) projects))))
+   :find-by-id (cell= (fn [id] (first (filter #(= (get % :projectid) id) projects))))
    :render {:option #(let [{:strs [projectreference projectid sitename]} %]
                        (div (p :class "reference" projectreference)
                             (p :class "client" sitename)))}
