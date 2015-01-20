@@ -1,4 +1,4 @@
-(defproject io.hoplon/reveal "0.1.0"
+(defproject org.clojars.danielneal/reveal "0.1.0"
 
   :description  "Hoplon wrapper for reveal"
   :license      {:name "Eclipse Public License"

@@ -14,6 +14,21 @@
   [href]
   (a {:href href} href))
 
+;; --------------
+;; Event handling
+;; --------------
+
+(let [fragment-shown-listeners (atom {})]
+  (defmethod on! :fragment-shown
+    [elem event callback]
+    (swap! fragment-shown-listeners assoc elem callback))
+  (with-init!
+    (.addEventListener
+     js/Reveal "fragmentshown"
+     (fn [event]
+       (when-let [callback (get @fragment-shown-listeners (.-fragment event))]
+         (callback))))))
+
 ;; -------------
 ;; Custom Elements
 ;; -------------
@@ -66,8 +81,8 @@
 (defelem intro
   [{:keys [title] :as attrs} children]
   (if (empty? title)
-    (slide {} children)
-    (slide {} (concat [(intro-title title)] children))))
+    (slide (dissoc attrs :title) children)
+    (slide (dissoc attrs :title) (concat [(intro-title title)] children))))
 
 (defelem slideshow
   [{:keys [theme] :as attrs :or {theme "default"}} children]
@@ -117,5 +132,4 @@
 
 (defelem highlight
   [attrs children]
-  (let [line-count (count (clojure.string/split children #"\\n"))]
-    (pre (code (if (< line-count 3) (merge {:class "big-code"} attrs) attrs) children))))
+  (pre (code attrs children)))
