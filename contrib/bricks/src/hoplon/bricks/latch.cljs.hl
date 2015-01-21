@@ -5,7 +5,8 @@
    [tailrecursion.javelin :refer [cell]]))
 
 (defn latch
-  "Returns a cell with formula (f x) which updates only when (f x) is truthy"
+  "Returns a cell with formula (f x) which updates only when (f x) is truthy.
+  Fires the callback everytime (f x) returns truthy."
   ([c f callback]
    (let [l (cell nil)]
      (add-watch c :latch (fn [k r o n] (when-let [v (f n)]
@@ -14,4 +15,21 @@
      l))
   ([c f]
    (latch c f (constantly nil))))
+
+
+(letfn [(merge-in* [a b]
+                   (if (map? a)
+                     (merge-with merge-in* a b)
+                     b))]
+  (defn merge-in
+    "Merge multiple nested maps."
+    [& args]
+    (reduce merge-in* nil args)))
+
+
+(defn cache-cell
+  "Create a cell that when written to, merges in the map as opposed to rewriting"
+  []
+  (let [state (cell {})]
+    (cell= state #(swap! state merge-in %))))
 
