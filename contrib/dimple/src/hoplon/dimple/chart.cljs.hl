@@ -19,4 +19,5 @@
         (.addSeries chart "Series" (chart-types chart-type))
         (let [[x y w h align] legend]
           (.addLegend chart x y w h align))
-        (.draw chart)))))
+        (.draw chart)
+        (.resize (js/jQuery js/window) #(.draw chart))))))
