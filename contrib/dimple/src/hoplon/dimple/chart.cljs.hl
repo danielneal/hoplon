@@ -7,7 +7,7 @@
    :bar js/dimple.plot.bar})
 
 (defelem chart [{:keys [id width height category-axis measure-axis legend data chart-type]
-                 :or {id (str (gensym)) width "100%" height 500 chart-type :line legend [200 10 380 20 "right"]}} _]
+                 :or {id (str (gensym)) width "100%" height 500 chart-type :line legend ["5%" "5%" "100%" 100 "right"]}} _]
   (with-let [container (div :id id)]
     (with-init!
       (let [Chart (.-chart js/dimple)
