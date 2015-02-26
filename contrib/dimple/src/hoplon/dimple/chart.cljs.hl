@@ -35,11 +35,11 @@
             data-js (clj->js @data)
             chart (Chart. svg data-js)
             custom-draw-opts (when custom-setup (custom-setup chart))
-            draw (fn [transition resize-only?]
+            draw (fn [resize-only?]
                    (if custom-draw
-                     (custom-draw chart transition resize-only? custom-draw-opts)
-                     (.draw chart transition resize-only?)))]
-        (.resize (js/jQuery js/window) (partial draw 0 true))
-        (.load (js/jQuery js/window) (partial draw 0 false))
+                     (custom-draw chart resize-only? custom-draw-opts)
+                     (.draw chart 0 resize-only?)))]
+        (.resize (js/jQuery js/window) (partial draw true))
+        (.load (js/jQuery js/window) (partial draw false))
         (cell= (do (set! (.-data chart) (clj->js data))
-                   (draw 0 false)))))))
+                   (draw false)))))))
