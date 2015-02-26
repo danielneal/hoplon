@@ -9,33 +9,47 @@ A [Hoplon][hoplon] wrapper for the [Dimple][3] charting library.
 ## Usage
 
 A very basic dimple implementation.
-Provides one element - chart-basic - for a reactive chart, then leaves the rest of the customisation up to you.
+Provides one element, `chart-basic`, which generates a reactive chart that updates when the data changes. 
+Leaves the rest of the customisation up to you (just provide a custom-setup function which takes the dimple chart). 
+
 ## Data
 
-Provide data to dimple as a vector of maps, like this:
+Format data for dimple in the following way:
 
-    (def data [{"Item" "Chair" "Weight" 5   "Height" 100}
-               {"Item" "Desk"  "Weight" 100 "Height" 100}
-               {"Item" "Lamp"  "Weight" 20  "Height" 20}])
+    (def data [{"Number" 1 "Count" 20}
+               {"Number" 2 "Count" 10}])
 
-## Simple bar chart example
+## Example
 
-    (def sentence "The quick brown fox jumped over the lazy dog. The lazy dog was annoyed by this but didn't do anything because he was lazy.
-                   In effect, the quick brown fox had got away with his reckless jumping once again.")
+    (page "chart.html"
+      (:require
+        [hoplon.dimple.chart :refer [chart-basic chart-types]]))
 
-    (def letter-frequencies
-      (for [[char f] (frequencies sentence)]
-        {"Letter" (str char) "Frequency" f}))
+    (defc dice-throws {})
+
+    (defn throw-dice! []
+      (let [throw (inc (int (* 6 (.random js/Math))))]
+      (swap! dice-throws update-in [throw] (fnil inc 0))))
+
+    (js/setInterval throw-dice! 100)
+
+    (defc= chart-data (mapv (fn [[k v]] {"Number" k "Count" v}) dice-throws))
 
     (html
       (head)
         (body
           (chart-basic
-
+            (chart-basic :data chart-data
+               :width "100%"
+               :height "400px"
+               :custom-setup (fn [chart]
+                               (.addMeasureAxis chart "y" "Count")
+                               (.addCategoryAxis chart "x" "Number")
+                               (.addSeries chart nil (chart-types :bar))))))
 
 ## License
 
-Copyright © 2014, Alan Dipert and Micha Niskin
+Copyright © 2015, Alan Dipert, Micha Niskin and Daniel Neal
 
 Distributed under the Eclipse Public License, the same as Clojure
 
