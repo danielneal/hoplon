@@ -14,13 +14,10 @@ Provides one element, `chart-basic`, which generates a reactive chart that updat
 Leaves the rest of the customisation up to you, which you can do by 
 
 
- * Providing a `custom-setup` function
-   This function takes the dimple `chart` object. Call methods on the `chart` object to add axes and series.
+ * Providing a `custom-setup` function. This function takes the dimple `chart` object. Call methods on the `chart` object to add axes and series
    (see [dimple api](https://github.com/PMSI-AlignAlytics/dimple/wiki/dimple.chart))
- * Provide an optional `custom-draw` function. 
-   This takes the dimple `chart` object, a `resize-only?` flag and the results of the `custom-setup` function as options.
-   (so you can hold onto e.g. axes and remove them on redraw). 
-   The custom-draw is responsible for calling `(.draw chart)`
+ * Provide an optional `custom-draw` function. This takes the dimple `chart` object, a `resize-only?` flag and the results of the `custom-setup` function as options
+   (so you can hold onto e.g. axes and remove them on redraw). The custom-draw is responsible for calling `(.draw chart)`
 
 ## Data
 
@@ -61,7 +58,7 @@ Format data for dimple in the following way:
 
 ## License
 
-Copyright © 2015, Alan Dipert, Micha Niskin and Daniel Neal
+Copyright © 2015, Hoplon - Alan Dipert, Micha Niskin, Daniel Neal
 
 Distributed under the Eclipse Public License, the same as Clojure
 
