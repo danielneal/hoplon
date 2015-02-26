@@ -9,8 +9,8 @@ A [Hoplon][hoplon] wrapper for the [Dimple][3] charting library.
 ## Usage
 
 A very basic dimple implementation.
-Provides one element, `chart-basic`, which generates a reactive chart that updates when the data changes. 
-Leaves the rest of the customisation up to you (just provide a custom-setup function which takes the dimple chart). 
+Provides one element, `chart-basic`, which generates a reactive chart that updates when the data cell changes. 
+Leaves the rest of the customisation up to you (just provide a `custom-setup` function which takes the dimple chart). 
 
 ## Data
 
@@ -38,14 +38,13 @@ Format data for dimple in the following way:
     (html
       (head)
         (body
-          (chart-basic
-            (chart-basic :data chart-data
-               :width "100%"
-               :height "400px"
-               :custom-setup (fn [chart]
-                               (.addMeasureAxis chart "y" "Count")
-                               (.addCategoryAxis chart "x" "Number")
-                               (.addSeries chart nil (chart-types :bar))))))
+          (chart-basic :data chart-data
+             :width "100%"
+             :height "400px"
+             :custom-setup (fn [chart]
+                             (.addMeasureAxis chart "y" "Count")
+                             (.addCategoryAxis chart "x" "Number")
+                             (.addSeries chart nil (chart-types :bar))))))
 
 ## License
 
