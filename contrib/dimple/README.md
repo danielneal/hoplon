@@ -17,7 +17,7 @@ Leaves the rest of the customisation up to you, which you can do by
  * Providing a `custom-setup` function. This function takes the dimple `chart` object. Call methods on the `chart` object to add axes and series
    (see [dimple api](https://github.com/PMSI-AlignAlytics/dimple/wiki/dimple.chart))
  * Provide an optional `custom-draw` function. This takes the dimple `chart` object, a `resize-only?` flag and the results of the `custom-setup` function as options
-   (so you can hold onto e.g. axes and remove them on redraw). The custom-draw is responsible for calling `(.draw chart)`
+   (so you can hold onto e.g. axes and remove them on redraw). The `custom-draw` function (if provided) is responsible for calling `(.draw chart)`
 
 ## Data
 
