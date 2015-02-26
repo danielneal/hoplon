@@ -8,10 +8,8 @@ A [Hoplon][hoplon] wrapper for the [Dimple][3] charting library.
 
 ## Usage
 
-At the moment this is just a quick and dirty dimple integration.
-
-Dimple has loads and loads of capabilities which this doesn't attempt to harness.
-
+A very basic dimple implementation.
+Provides one element - chart-basic - for a reactive chart, then leaves the rest of the customisation up to you.
 ## Data
 
 Provide data to dimple as a vector of maps, like this:
@@ -32,7 +30,7 @@ Provide data to dimple as a vector of maps, like this:
     (html
       (head)
         (body
-          (chart :id "some-chart" :data letter-frequencies :measure-axis "Frequency" :category-axis "Letter" :chart-type :bar :width 1200 :height 600)))
+          (chart-basic
 
 
 ## License
