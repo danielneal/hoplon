@@ -9,8 +9,17 @@ A [Hoplon][hoplon] wrapper for the [Dimple][3] charting library.
 ## Usage
 
 A very basic dimple implementation.
+
 Provides one element, `chart-basic`, which generates a reactive chart that updates when the data cell changes. 
-Leaves the rest of the customisation up to you (just provide a `custom-setup` function which takes the dimple chart). 
+Leaves the rest of the customisation up to you, which you can do by 
+
+
+ * Providing a `custom-setup` function
+   This function takes the dimple chart. Use this to set up axes etc. 
+ * Provide an optional `custom-draw` function. 
+   This takes a resize-only? flag and the results of the `custom-setup` function as options.
+   (so you can hold onto e.g. axes and remove them on redraw). 
+   The custom-draw is responsible for calling `(.draw chart)`
 
 ## Data
 
@@ -42,9 +51,12 @@ Format data for dimple in the following way:
              :width "100%"
              :height "400px"
              :custom-setup (fn [chart]
-                             (.addMeasureAxis chart "y" "Count")
-                             (.addCategoryAxis chart "x" "Number")
-                             (.addSeries chart nil (chart-types :bar))))))
+                               {:ma (.addMeasureAxis chart "y" "Count")
+                                :ca (.addCategoryAxis chart "x" "Number")
+                                :s (.addSeries chart nil (chart-types :bar))}) 
+             :custom-draw (fn [chart resize-only? {:keys [ma ca s] :as opts}]
+                              (.draw chart 250 resize-only?)
+                              (.remove (.-titleShape ca))))))
 
 ## License
 
