@@ -1,4 +1,4 @@
-(defproject io.hoplon.danielneal/dimple "0.2.0"
+(defproject io.hoplon.danielneal/dimple "0.3.0"
   :description  "Hoplon wrapper for the dimple charting library."
   :url          "http://github.com/tailrecursion/hoplon/tree/master/contrib/dimple"
   :license      {:name "Eclipse Public License"
