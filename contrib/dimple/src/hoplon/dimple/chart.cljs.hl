@@ -37,7 +37,7 @@
             custom-draw-opts (when custom-setup (custom-setup chart))
             draw (fn [transition resize-only?]
                    (if custom-draw
-                     (custom-draw chart custom-draw-opts)
+                     (custom-draw chart transition resize-only? custom-draw-opts)
                      (.draw chart transition resize-only?)))]
         (.resize (js/jQuery js/window) (partial draw 0 true))
         (.load (js/jQuery js/window) (partial draw 0 false))
